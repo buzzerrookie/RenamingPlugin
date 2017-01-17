@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+    <extension point="org.eclipse.ui.menus">
+        <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+            <command commandId="com.suntao.rename" label="添加项目标识" style="push">
+                <visibleWhen checkEnabled="false">
+                    <with variable="selection">
+                        <count value="1"/>
+                        <iterate ifEmpty="false">
+                            <adapt type="org.eclipse.jdt.core.IPackageFragment">
+                            </adapt>
+                        </iterate>
+                    </with>
+                </visibleWhen>
+            </command>
+        </menuContribution>
+    </extension>
+    <extension point="org.eclipse.ui.commands">
+        <command id="com.suntao.rename" name="Convert">
+        </command>
+    </extension>
+    <extension point="org.eclipse.ui.handlers">
+        <handler class="com.suntao.handler.RenameHandler" commandId="com.suntao.rename">
+        </handler>
+    </extension>
+</plugin>

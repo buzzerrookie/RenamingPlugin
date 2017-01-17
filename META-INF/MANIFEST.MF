@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RenamingPlugin
+Bundle-SymbolicName: com.suntao.renamingplugin;singleton:=true
+Bundle-Version: 1.0
+Bundle-Activator: com.suntao.renamingplugin.Activator
+Bundle-Vendor: suntao
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.7.101",
+ org.eclipse.core.expressions;bundle-version="3.4.300",
+ org.eclipse.jdt.core;bundle-version="3.7.3",
+ org.eclipse.ltk.core.refactoring;bundle-version="3.5.201",
+ org.eclipse.jdt.core.manipulation;bundle-version="1.4.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
