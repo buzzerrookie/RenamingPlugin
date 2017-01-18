@@ -88,11 +88,12 @@ public class RenameRunnableWithProgress implements IRunnableWithProgress {
      * @param pack 包
      * @param suffix 项目标识
      * @throws JavaModelException
+     * @throws CoreException
      * @author sunt
      * @since 2017年1月17日
      */
-    private void renameClassFile(IPackageFragment pack, String suffix)
-            throws JavaModelException {
+    private void renameClassFile(IPackageFragment pack, String suffix) throws JavaModelException,
+            CoreException {
         for (ICompilationUnit cu : pack.getCompilationUnits()) {
             String fileName = cu.getElementName();
             RefactoringContribution contribution = RefactoringCore
@@ -235,10 +236,11 @@ public class RenameRunnableWithProgress implements IRunnableWithProgress {
      * 
      * @param pack 需要修改的包
      * @param suffix 项目标识
+     * @throws CoreException
      * @author sunt
      * @since 2017年1月17日
      */
-    private void renamePackage(IPackageFragment pack, String suffix) {
+    private void renamePackage(IPackageFragment pack, String suffix) throws CoreException {
         RefactoringContribution contribution = RefactoringCore
                 .getRefactoringContribution(IJavaRefactorings.RENAME_PACKAGE);
         RenameJavaElementDescriptor descriptor = (RenameJavaElementDescriptor) contribution
@@ -255,25 +257,21 @@ public class RenameRunnableWithProgress implements IRunnableWithProgress {
      * 执行重构
      * 
      * @param descriptor 重构描述符
+     * @throws CoreException
      * @author sunt
      * @since 2017年1月17日
      */
-    private void exectueRefactoring(RefactoringDescriptor descriptor) {
-        try {
-            RefactoringStatus status = new RefactoringStatus();
-            RenameRefactoring refactoring = (RenameRefactoring) descriptor
-                    .createRefactoring(status);
-            IProgressMonitor monitor = new NullProgressMonitor();
-            status = refactoring.checkInitialConditions(monitor);
+    private void exectueRefactoring(RefactoringDescriptor descriptor) throws CoreException {
+        RefactoringStatus status = new RefactoringStatus();
+        RenameRefactoring refactor = (RenameRefactoring) descriptor.createRefactoring(status);
+        IProgressMonitor monitor = new NullProgressMonitor();
+        status = refactor.checkInitialConditions(monitor);
+        if (!status.hasFatalError()) {
+            status = refactor.checkFinalConditions(monitor);
             if (!status.hasFatalError()) {
-                status = refactoring.checkFinalConditions(monitor);
-                if (!status.hasFatalError()) {
-                    Change change = refactoring.createChange(monitor);
-                    change.perform(monitor);
-                }
+                Change change = refactor.createChange(monitor);
+                change.perform(monitor);
             }
-        } catch (CoreException e) {
-            e.printStackTrace();
         }
     }
 }
