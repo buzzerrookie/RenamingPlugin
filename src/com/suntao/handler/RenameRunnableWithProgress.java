@@ -180,6 +180,9 @@ public class RenameRunnableWithProgress implements IRunnableWithProgress {
         String newDTOName = packageName.substring(0, packageName.length() - 4)
                 + suffix.toLowerCase() + ".dto." + tableName + suffix + "DTO";
         try {
+            // 这里重新获取输入流，因为getOldDaoName方法中DocumentBuilder.parse是否会关闭输入流是不确定的
+            is.close();
+            is = file.getContents();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is,
                     StandardCharsets.UTF_8));
             String line; // 依次循环，至到读的值为空
